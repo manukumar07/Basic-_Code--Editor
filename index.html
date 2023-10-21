@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Code-Editor</title>
+    <link rel="stylesheet" href="style.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/e8fa2e31b4.js"  crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <div class="main-container">
+        < /> Code Editor
+    </div>
+    <div class="container">
+      <div class="left">
+        <div class="box">
+          <label for=""><i class="fa-brands fa-html5"></i> HTML
+            <div class="menu-icon">
+                <span class="material-icons-outlined" id="save" title="Save" > save </span>
+                <span class="material-icons-outlined" id="copy" title="Copy" > copy </span>
+                <span  class="material-icons-outlined" id="lock" title="Lock Editor"style="display: none" > lock </span>
+                <span class="material-icons-outlined" id="unlock" title="Unlock Editor" > lock_open </span>
+            </div>
+        </label>
+          <textarea id="html-code" onkeyup="run()"></textarea>
+        </div>
+        <div class="box">
+          <label for=""><i class="fa-brands fa-css3-alt"></i> CSS
+            <div class="menu-icon">
+            <span class="material-icons-outlined" id="save" title="Save"> save </span>
+            <span class="material-icons-outlined" id="copy" title="Copy"> copy </span>
+            <span  class="material-icons-outlined" id="lock" title="Lock Editor"style="display: none"> lock </span>
+            <span class="material-icons-outlined" id="unlock" title="Unlock Editor"> lock_open </span>
+            </div>
+        </label>
+          <textarea id="css-code" onkeyup="run()"></textarea>
+        </div>
+        <div class="box">
+          <label for=""><i class="fa-brands fa-js"></i> JavaScript
+            <div class="menu-icon-js">
+            <span class="material-icons-outlined" id="save" title="Save"> save </span>
+            <span class="material-icons-outlined" id="copy" title="Copy"> copy </span>
+            <span  class="material-icons-outlined" id="lock" title="Lock Editor"style="display: none"> lock </span>
+            <span class="material-icons-outlined" id="unlock" title="Unlock Editor"> lock_open </span>
+            </div>
+        </label>
+          <textarea id="js-code" onkeyup="run()"></textarea>
+        </div>
+      </div>
+
+      <!-- // output  -->
+      <div class="right">
+        <label for=""><i class="fa-solid fa-play"></i> Output</label>
+        <iframe id="output"></iframe>
+      </div>
+    </div>
+
+    <script>  
+      function run() {
+        let htmlCode = document.getElementById("html-code").value;
+        let cssCode = document.getElementById("css-code").value;
+        let jsCode = document.getElementById("js-code").value;
+        let outPut = document.getElementById("output");
+
+        outPut.contentDocument.body.innerHTML =
+          htmlCode + "<style>" + cssCode + "</style>"; 
+        outPut.contentWindow.eval(jsCode);
+      }
+
+      // Get the necessary elements
+      const saveButton = document.getElementById("save");
+      const copyButton = document.getElementById("copy");
+
+      // Other event listeners for save and copy buttons
+      saveButton.addEventListener("click", () => {
+        const html = document.getElementById("html-code").value;
+        const link = document.createElement("a");
+        link.setAttribute("download", "index.html");
+        link.setAttribute(
+          "href",
+          "data:text/html;charset=utf-8," + encodeURIComponent(html)
+        );
+        link.click();
+      });
+      copyButton.addEventListener("click", () => {
+        copyData();
+      });
+
+      // Function to copy data to the clipboard
+      function copyData() {
+        const htmlCode = document.getElementById("html-code");
+        htmlCode.select();
+        htmlCode.setSelectionRange(0, 99999); 
+        document.execCommand("copy");
+        alert("Code copied");
+      }
+      // Event listeners for the lock and unlock buttons
+      document.getElementById("lock").addEventListener("click", function () {
+        document.getElementById("html-code").setAttribute("readonly", false);
+        document.getElementById("css-code").setAttribute("readonly", true);
+        document.getElementById("js-code").setAttribute("readonly", true);
+        this.style.display = "none";
+        document.getElementById("unlock").style.display = "inline";
+      });
+
+      document.getElementById("unlock").addEventListener("click", function () {
+        document.getElementById("html-code").removeAttribute("readonly");
+        document.getElementById("css-code").removeAttribute("readonly");
+        document.getElementById("js-code").removeAttribute("readonly");
+        this.style.display = "none";
+        document.getElementById("lock").style.display = "inline";
+      });
+</script>
+  </body>
+</html>
